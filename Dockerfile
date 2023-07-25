@@ -40,7 +40,7 @@ WORKDIR /home/r5reloaded/server
 
 # Expose ports
 
-EXPOSE 37000
+EXPOSE 37000/UDP
 
 # Define environment
 
