@@ -5,15 +5,6 @@ LABEL org.opencontainers.image.authors="radical@radical.fun" version="1.0"
 
 RUN useradd -m r5reloaded
 
-# Copy
-
-# Server zip downloaded from announcements
-COPY server.zip /home/r5reloaded
-# https://github.com/ColombianGuy/r5_flowstate/archive/refs/heads/r5_flowstate.zip renamed to flowstate-scripts.zip
-COPY flowstate-scripts.zip /home/r5reloaded
-# https://github.com/ColombianGuy/r5_flowstate/releases/latest Flowstate.-.Required.Files.zip renamed to flowstate.zip
-COPY flowstate.zip /home/r5reloaded
-
 # Install dependencies
 
 RUN dpkg --add-architecture i386 && \
@@ -25,6 +16,15 @@ RUN dpkg --add-architecture i386 && \
     apt update -y && \
     apt install winehq-stable -y
 
+# Copy
+
+# Server zip downloaded from announcements
+COPY server.zip /home/r5reloaded
+# https://github.com/ColombianGuy/r5_flowstate/archive/refs/heads/r5_flowstate.zip renamed to flowstate-scripts.zip
+COPY flowstate-scripts.zip /home/r5reloaded
+# https://github.com/ColombianGuy/r5_flowstate/releases/latest Flowstate.-.Required.Files.zip renamed to flowstate.zip
+COPY flowstate.zip /home/r5reloaded
+
 # Swap to new user
 
 USER r5reloaded
@@ -33,10 +33,11 @@ USER r5reloaded
 
 RUN mkdir /home/r5reloaded/server
 WORKDIR /home/r5reloaded/server
-RUN unzip -o ../server.zip && unzip -o ../flowstate.zip
+RUN unzip -o ../server.zip
 WORKDIR /home/r5reloaded/server/platform/scripts
 RUN unzip -o ../../../flowstate-scripts.zip
 WORKDIR /home/r5reloaded/server
+RUN unzip -o ../flowstate.zip
 
 # Expose ports
 
