@@ -40,7 +40,7 @@ WORKDIR /home/r5reloaded/server
 
 # Expose ports
 
-EXPOSE 37000/UDP
+EXPOSE 37000/udp
 
 # Define environment
 
@@ -53,5 +53,5 @@ ENV WINEARCH=win64
 ENV WINEPREFIX=/home/r5reloaded/server/wineprefix
 ENV HOME=/home/r5reloaded
 
-ENTRYPOINT wine r5apex_ds.exe -port 37000 -launchplaylist ${PLAYLIST} +hostname ${NAME} ${ARGS}
+ENTRYPOINT wine r5apex_ds.exe -port 37000 +launchplaylist ${PLAYLIST} +hostname ${NAME} ${ARGS}
 
