@@ -1,0 +1,15 @@
+version: '3.5'
+services:
+  server:
+    # To use this compose file you need to first run `docker build -t r5reloaded-server -f Dockerfile`
+    image: localhost/r5reloaded-server:latest
+    ports:
+      - 37000:37000/udp
+    restart: 'unless-stopped'
+    environment:
+      # Extra args to set when launching
+      - ARGS="+sv_pylonVisibility 2 +map mp_rr_arena_composite"
+      # Server name
+      - NAME="1v1 server"
+      # Playlist to use
+      - PLAYLIST="fs_1v1"
