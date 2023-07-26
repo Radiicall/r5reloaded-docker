@@ -34,10 +34,16 @@ USER r5reloaded
 RUN mkdir /home/r5reloaded/server
 WORKDIR /home/r5reloaded/server
 RUN unzip -o ../server.zip
-WORKDIR /home/r5reloaded/server/platform/scripts
-RUN unzip -o ../../../flowstate-scripts.zip
+RUN unzip -o ../flowstate-scripts.zip && \
+    cp -r r5_flowstate-r5_flowstate/* platform/scripts
 WORKDIR /home/r5reloaded/server
 RUN unzip -o ../flowstate.zip
+
+# Delete files
+
+USER root
+RUN rm -rf ../server.zip ../flowstate.zip ../flowstate-scripts.zip ./r5_flowstate-r5_flowstate
+USER r5reloaded
 
 # Expose ports
 
@@ -47,12 +53,12 @@ EXPOSE 37000/udp
 
 ENV ARGS=""
 ENV NAME="An R5Reloaded Server"
-ENV PLAYLIST="custom_tdm"
+ENV PLAYLIST="fs_dm"
 ENV WINEDEBUG="-all"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV WINEARCH=win64
 ENV WINEPREFIX=/home/r5reloaded/server/wineprefix
 ENV HOME=/home/r5reloaded
 
-ENTRYPOINT wine r5apex_ds.exe -port 37000 +launchplaylist ${PLAYLIST} +hostname ${NAME} ${ARGS}
+ENTRYPOINT wine r5apex_ds.exe -port 37000 +launchplaylist "${PLAYLIST}" +hostname "${NAME}" ${ARGS}
 
