@@ -8,7 +8,7 @@ services:
     restart: 'unless-stopped'
     #volumes:
     #  - /path/to/custom/cfg/folder:/home/r5reloaded/server/platform/cfg:Z
-    #  - /path/to/custom/playlists_r5_patch.txt:/home/r5reloaded/server/platform/playlists_r5_patch.txt
+    #  - /path/to/custom/playlists_r5_patch.txt:/home/r5reloaded/server/platform/playlists_r5_patch.txt:Z
     environment:
       # DONT ADD QUOTES AROUND THE ENVIRONMENT VARIABLES
       # Extra args to set when launching
