@@ -7,9 +7,10 @@ services:
       - 37000:37000/udp
     restart: 'unless-stopped'
     environment:
+      # DONT ADD QUOTES AROUND THE ENVIRONMENT VARIABLES
       # Extra args to set when launching
-      - ARGS="+sv_pylonVisibility 2 +map mp_rr_arena_composite"
+      - ARGS=+sv_pylonVisibility 2 +map mp_rr_arena_composite
       # Server name
-      - NAME="1v1 server"
+      - NAME=1v1 server
       # Playlist to use
-      - PLAYLIST="fs_1v1"
+      - PLAYLIST=fs_1v1
