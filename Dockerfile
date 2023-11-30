@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-LABEL org.opencontainers.image.authors="radical@radical.fun" version="1.0"
+LABEL org.opencontainers.image.authors="radical@radical.fun" version="1.1"
 
 # Add new user
 
@@ -21,10 +21,11 @@ RUN dpkg --add-architecture i386 && \
 # Server zip downloaded from announcements
 COPY server.zip /home/r5reloaded
 # https://github.com/ColombianGuy/r5_flowstate/archive/refs/heads/r5_flowstate.zip renamed to flowstate-scripts.zip
-COPY flowstate-scripts.zip /home/r5reloaded
+ADD https://github.com/ColombianGuy/r5_flowstate/archive/refs/heads/r5_flowstate.zip /home/r5reloaded/flowstate-scripts.zip
 # https://github.com/ColombianGuy/r5_flowstate/releases/latest Flowstate.-.Required.Files.zip renamed to flowstate.zip
-COPY flowstate.zip /home/r5reloaded
+ADD https://github.com/ColombianGuy/r5_flowstate/releases/latest/download/FS4.1.-.Required.Files.zip /home/r5reloaded/flowstate.zip
 
+RUN chown -R r5reloaded:r5reloaded /home/r5reloaded
 # Swap to new user
 
 USER r5reloaded
@@ -42,7 +43,13 @@ RUN unzip -o ../flowstate.zip
 # Delete files
 
 USER root
-RUN rm -rf ../server.zip ../flowstate.zip ../flowstate-scripts.zip ./r5_flowstate-r5_flowstate
+RUN rm -rf /home/r5reloaded/server.zip /home/r5reloaded/flowstate.zip /home/r5reloaded/flowstate-scripts.zip
+
+# Remove apt packages
+
+RUN apt purge software-properties-common wget unzip gnupg -y \
+    && apt autoremove -y \
+    && rm -rf {/var/lib/apt/lists/*, /var/cache/apt/archives/*}
 USER r5reloaded
 
 # Expose ports
