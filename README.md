@@ -9,7 +9,7 @@ This runs R5Reloaded from a docker container, this makes setting up servers a bi
 2. Grab a server zip file from the #announcements channel in the <a href="https://discord.gg/r5reloaded">R5Reloaded</a> server
 3. Place server[.]zip in the cloned directory
 4. Rename the server zip to `server.zip`
-5. Run `docker build -t r5reloaded-server -f Dockerfile` while still in the cloned directory
+5. Run `docker build -t r5reloaded-server .` while still in the cloned directory
 
 ### Configuration
 
