@@ -14,7 +14,7 @@ RUN dpkg --add-architecture i386 && \
     wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
     apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ jammy main' && \
     apt update -y && \
-    apt install winehq-stable -y
+    apt install winehq-stable=8.0.2~jammy-1 wine-stable=8.0.2~jammy-1 wine-stable-amd64=8.0.2~jammy-1 wine-stable-i386=8.0.2~jammy-1 -y
 
 # Copy
 
