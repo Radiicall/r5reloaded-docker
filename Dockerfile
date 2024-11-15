@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:jammy
 LABEL org.opencontainers.image.authors="radical@radical.fun" version="1.1"
 
 # Add new user
