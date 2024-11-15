@@ -58,6 +58,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV WINEARCH=win64
 ENV WINEPREFIX=/home/r5reloaded/server/wineprefix
 ENV HOME=/home/r5reloaded
+ENV PORT=37000
 
-ENTRYPOINT wine r5apex_ds.exe -port 37000 +launchplaylist "${PLAYLIST}" +hostname "${NAME}" ${ARGS}
+ENTRYPOINT wine r5apex_ds.exe -port ${PORT} +launchplaylist "${PLAYLIST}" +hostname "${NAME}" ${ARGS}
 
