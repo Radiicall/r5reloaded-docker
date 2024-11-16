@@ -1,8 +1,7 @@
 version: '3.5'
 services:
   server:
-    # To use this compose file you need to first run `docker build -t r5reloaded-server -f Dockerfile`
-    image: localhost/r5reloaded-server:latest
+    image: ghcr.io/radiicall/r5reloaded-docker:main
     ports:
       - 37000:37000/udp
     restart: 'unless-stopped'
@@ -17,3 +16,5 @@ services:
       - NAME=1v1 server
       # Playlist to use
       - PLAYLIST=fs_1v1
+      # Port to bind to internally. MUST ALSO BE CHANGED UP ABOVE UNDER THE PORTS SECTION
+      - PORT=37000
