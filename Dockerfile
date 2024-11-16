@@ -39,7 +39,7 @@ RUN rm -rf /home/r5reloaded/server.7z
 
 # Remove apt packages
 
-RUN apt purge software-properties-common wget unzip gnupg -y \
+RUN apt purge software-properties-common wget p7zip-full gnupg -y \
     && apt autoremove -y \
     && rm -rf {/var/lib/apt/lists/*, /var/cache/apt/archives/*}
 USER r5reloaded
