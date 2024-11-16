@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:jammy
 LABEL org.opencontainers.image.authors="radical@radical.fun" version="1.1"
 
 # Add new user
@@ -10,20 +10,16 @@ RUN useradd -m r5reloaded
 RUN dpkg --add-architecture i386 && \
     apt update -y && \
     apt upgrade -y && \
-    apt install software-properties-common wget unzip gnupg -y && \
+    apt install software-properties-common wget p7zip gnupg -y && \
     wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
     apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ jammy main' && \
     apt update -y && \
-    apt install winehq-stable -y
+    apt install winehq-stable=8.0.2~jammy-1 wine-stable=8.0.2~jammy-1 wine-stable-amd64=8.0.2~jammy-1 wine-stable-i386=8.0.2~jammy-1 -y
 
 # Copy
 
 # Server zip downloaded from announcements
-COPY server.zip /home/r5reloaded
-# https://github.com/ColombianGuy/r5_flowstate/archive/refs/heads/r5_flowstate.zip renamed to flowstate-scripts.zip
-ADD https://github.com/ColombianGuy/r5_flowstate/archive/refs/heads/r5_flowstate.zip /home/r5reloaded/flowstate-scripts.zip
-# https://github.com/ColombianGuy/r5_flowstate/releases/latest Flowstate.-.Required.Files.zip renamed to flowstate.zip
-ADD https://github.com/ColombianGuy/r5_flowstate/releases/latest/download/FS4.1.-.Required.Files.zip /home/r5reloaded/flowstate.zip
+ADD https://s3.r5reloaded.com/dedicated_builds/server_v2.5_r3_46e2424b.7z /home/r5reloaded/server.7z
 
 RUN chown -R r5reloaded:r5reloaded /home/r5reloaded
 # Swap to new user
@@ -34,16 +30,12 @@ USER r5reloaded
 
 RUN mkdir /home/r5reloaded/server
 WORKDIR /home/r5reloaded/server
-RUN unzip -o ../server.zip
-RUN unzip -o ../flowstate-scripts.zip && \
-    cp -r r5_flowstate-r5_flowstate/* platform/scripts
-WORKDIR /home/r5reloaded/server
-RUN unzip -o ../flowstate.zip
+RUN 7z x ../server.7z
 
 # Delete files
 
 USER root
-RUN rm -rf /home/r5reloaded/server.zip /home/r5reloaded/flowstate.zip /home/r5reloaded/flowstate-scripts.zip
+RUN rm -rf /home/r5reloaded/server.7z
 
 # Remove apt packages
 
@@ -66,6 +58,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV WINEARCH=win64
 ENV WINEPREFIX=/home/r5reloaded/server/wineprefix
 ENV HOME=/home/r5reloaded
+ENV PORT=37000
 
-ENTRYPOINT wine r5apex_ds.exe -port 37000 +launchplaylist "${PLAYLIST}" +hostname "${NAME}" ${ARGS}
+ENTRYPOINT wine r5apex_ds.exe -port ${PORT} +launchplaylist "${PLAYLIST}" +hostname "${NAME}" ${ARGS}
 
