@@ -19,7 +19,7 @@ RUN dpkg --add-architecture i386 && \
 # Copy
 
 # Server zip downloaded from announcements
-COPY server.7z /home/r5reloaded
+ADD https://s3.r5reloaded.com/dedicated_builds/server_v2.5_r3_46e2424b.7z /home/r5reloaded/server.7z
 
 RUN chown -R r5reloaded:r5reloaded /home/r5reloaded
 # Swap to new user
