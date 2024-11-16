@@ -5,44 +5,29 @@ LABEL org.opencontainers.image.authors="radical@radical.fun" version="1.1"
 
 RUN useradd -m r5reloaded
 
+# Copy
+
+COPY --chown=r5reloaded:r5reloaded ./server/ ./winehq.key /home/r5reloaded/server/
+
 # Install dependencies
 
 RUN dpkg --add-architecture i386 && \
     apt update -y && \
     apt upgrade -y && \
-    apt install software-properties-common wget p7zip-full gnupg -y && \
-    wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
+    apt install software-properties-common gnupg -y && \
+    cat /home/r5reloaded/server/winehq.key | apt-key add - && \
     apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ jammy main' && \
     apt update -y && \
-    apt install winehq-stable=8.0.2~jammy-1 wine-stable=8.0.2~jammy-1 wine-stable-amd64=8.0.2~jammy-1 wine-stable-i386=8.0.2~jammy-1 -y
+    apt install winehq-stable=8.0.2~jammy-1 wine-stable=8.0.2~jammy-1 wine-stable-amd64=8.0.2~jammy-1 wine-stable-i386=8.0.2~jammy-1 -y && \
+    apt purge software-properties-common gnupg -y && \
+    apt autoremove -y && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* /home/r5reloaded/server/winehq.key
 
-# Copy
-
-# Server zip downloaded from announcements
-ADD https://s3.r5reloaded.com/dedicated_builds/server_v2.5_r3_46e2424b.7z /home/r5reloaded/server.7z
-
-RUN chown -R r5reloaded:r5reloaded /home/r5reloaded
 # Swap to new user
 
 USER r5reloaded
 
-# Unzip files
-
-RUN mkdir /home/r5reloaded/server
 WORKDIR /home/r5reloaded/server
-RUN 7z x ../server.7z
-
-# Delete files
-
-USER root
-RUN rm -rf /home/r5reloaded/server.7z
-
-# Remove apt packages
-
-RUN apt purge software-properties-common wget p7zip-full gnupg -y \
-    && apt autoremove -y \
-    && rm -rf {/var/lib/apt/lists/*, /var/cache/apt/archives/*}
-USER r5reloaded
 
 # Expose ports
 
@@ -50,15 +35,15 @@ EXPOSE 37000/udp
 
 # Define environment
 
-ENV ARGS=""
-ENV NAME="An R5Reloaded Server"
-ENV PLAYLIST="fs_dm"
-ENV WINEDEBUG="-all"
-ENV DEBIAN_FRONTEND=noninteractive
-ENV WINEARCH=win64
-ENV WINEPREFIX=/home/r5reloaded/server/wineprefix
-ENV HOME=/home/r5reloaded
-ENV PORT=37000
+ENV ARGS="" \
+    NAME="An R5Reloaded Server" \
+    PLAYLIST="fs_dm" \
+    WINEDEBUG="-all" \
+    DEBIAN_FRONTEND=noninteractive \
+    WINEARCH=win64 \
+    WINEPREFIX=/home/r5reloaded/server/wineprefix \
+    HOME=/home/r5reloaded \
+    PORT=37000
 
 ENTRYPOINT wine r5apex_ds.exe -port ${PORT} +launchplaylist "${PLAYLIST}" +hostname "${NAME}" ${ARGS}
 
