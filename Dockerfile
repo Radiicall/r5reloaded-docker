@@ -10,7 +10,7 @@ RUN useradd -m r5reloaded
 RUN dpkg --add-architecture i386 && \
     apt update -y && \
     apt upgrade -y && \
-    apt install software-properties-common wget p7zip gnupg -y && \
+    apt install software-properties-common wget p7zip-full gnupg -y && \
     wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
     apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ jammy main' && \
     apt update -y && \
