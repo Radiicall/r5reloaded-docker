@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   server:
-    image: ghcr.io/radiicall/r5reloaded-docker:main
+    image: ghcr.io/radiicall/r5reloaded-docker:latest
     ports:
       - 37000:37000/udp
     restart: 'unless-stopped'
