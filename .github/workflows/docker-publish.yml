@@ -49,7 +49,7 @@ jobs:
         run: sudo apt update && sudo apt install -y p7zip-full wget
 
       - name: Download server release
-        run: wget https://s3.r5reloaded.com/dedicated_builds/server_v2.5_r3_46e2424b.7z -O server.7z
+        run: wget https://s3.r5reloaded.com/dedicated_builds/server_v2.5_r5_745024d1.7z -O server.7z
 
       - name: Extract server release
         run: mkdir server && cd server && 7z x ../server.7z && cd ..
