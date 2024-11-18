@@ -10,7 +10,7 @@ on:
   push:
     branches: [ "main" ]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: [ 'v*.*' ]
   pull_request:
     branches: [ "main" ]
 
@@ -44,9 +44,6 @@ jobs:
             
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Install deps
-        run: sudo apt update && sudo apt install -y p7zip-full wget
 
       - name: Download server release
         run: wget https://s3.r5reloaded.com/dedicated_builds/server_v2.5_r5_745024d1.7z -O server.7z
